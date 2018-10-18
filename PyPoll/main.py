@@ -31,8 +31,8 @@ with open(csvpath, newline= '') as csvfile:
 
     tooleyvotes = sum(1 for row in csvreader if row[2] == "O'Tooley")
 
-    khanpercentage = float(round((int(khanvotes) / int(totalvotes)) * 100, 4))
-    correypercentage = float(round((int(correyvotes) / int(totalvotes)) * 100, 3))
+    khanpercentage = str(round((int(khanvotes) / int(totalvotes)) * 100, 4))
+    correypercentage = str(round((int(correyvotes) / int(totalvotes)) * 100, 3))
     lipercentage = str(round((int(livotes) / int(totalvotes)) * 100, 5))
     tooleypercentage = str(round((int(tooleyvotes) / int(totalvotes)) * 100, 5))
 
@@ -58,8 +58,8 @@ with open(csvpath, newline= '') as csvfile:
     print("----------------------------")
     print(f"Total Votes: {totalvotes}")
     print("----------------------------")
-    print(f"Khan: {str(khanpercentage)}% ({khanvotes})")
-    print(f"Correy: {str(correypercentage)}% ({correyvotes})")
+    print(f"Khan: {khanpercentage}% ({khanvotes})")
+    print(f"Correy: {correypercentage}% ({correyvotes})")
     print(f"Li: {lipercentage}% ({livotes})")
     print(f"O'Tooley: {tooleypercentage}% ({tooleyvotes})")
     print("----------------------------")
