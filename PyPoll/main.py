@@ -1,85 +1,53 @@
 import os
-import csv
+import pandas as pd
 
-csvpath = os.path.join("election_data.csv")
+filepath = "election_data.csv"
 
-with open(csvpath, newline= '') as csvfile:
+election_df = pd.read_csv(filepath)
 
-    csvreader = csv.reader(csvfile, delimiter = ',')
-
-    next(csvreader)
-
-    totalvotes = sum(1 for row in csvreader)
-
-    csvfile.seek(0)
-    next(csvreader)
-
-    khanvotes = sum(1 for row in csvreader if row[2] == "Khan")
-
-    csvfile.seek(0)
-    next(csvreader)
-
-    correyvotes = sum(1 for row in csvreader if row[2] == "Correy")
-
-    csvfile.seek(0)
-    next(csvreader)
-
-    livotes = sum(1 for row in csvreader if row[2] == "Li")
-
-    csvfile.seek(0)
-    next(csvreader)
-
-    tooleyvotes = sum(1 for row in csvreader if row[2] == "O'Tooley")
-
-    khanpercentage = str(round((int(khanvotes) / int(totalvotes)) * 100, 4))
-    correypercentage = str(round((int(correyvotes) / int(totalvotes)) * 100, 3))
-    lipercentage = str(round((int(livotes) / int(totalvotes)) * 100, 5))
-    tooleypercentage = str(round((int(tooleyvotes) / int(totalvotes)) * 100, 5))
+election_df.head()
 
 
 
 
-    winner = max(khanvotes, correyvotes, livotes, tooleyvotes)
+#Make data frame and count candidates
+votes_df = pd.DataFrame(election_df['Candidate'].value_counts())
+votes_df = votes_df.sort_values('Candidate', ascending=False)
+candidate_count = len(votes_df['Candidate'])
+totalvotes = votes_df['Candidate'].sum()
+winner = votes_df.index[0]
 
-    if winner == khanvotes:
-        winnername = "Khan"
+print("Financial Analysis")
+print("--------------------------------")
+
+print(f"Total Votes: {totalvotes}")
+print("--------------------------------")
+
+
+for x in range(0, candidate_count):
     
-    elif winner == correyvotes:
-        winnername = "Correy"
+    print(f"{votes_df.index[x]}: {votes_df.iloc[x,0]}")
     
-    elif winner == livotes:
-        winnername = "Li"
+print("--------------------------------")
+print(f"Winner: {winner}")
+print("--------------------------------")
     
-    elif winner == tooleyvotes:
-        winnername = "O'Tooley"
-    
-    
-    print("Election Results")
-    print("----------------------------")
-    print(f"Total Votes: {totalvotes}")
-    print("----------------------------")
-    print(f"Khan: {khanpercentage}% ({khanvotes})")
-    print(f"Correy: {correypercentage}% ({correyvotes})")
-    print(f"Li: {lipercentage}% ({livotes})")
-    print(f"O'Tooley: {tooleypercentage}% ({tooleyvotes})")
-    print("----------------------------")
-    print(f"Winner: {winnername}")
-    print("----------------------------")
+outputname = "election-results.txt"
+
+myfile = open(outputname, 'w')
+
+myfile.write("Financial Analysis\n")
+myfile.write("--------------------------------\n")
+
+myfile.write(f"Total Votes: {totalvotes}\n")
+myfile.write("--------------------------------\n")
 
 
-    resultsname = "Election Results.txt"
-
-    myfile = open(resultsname, 'w')
-
-    myfile.write("Election Results\n")
-    myfile.write("----------------------------\n")
-    myfile.write(f"Total Votes: {totalvotes}\n")
-    myfile.write("----------------------------\n")
-    myfile.write(f"Khan: {str(khanpercentage)}% ({khanvotes})\n")
-    myfile.write(f"Correy: {str(correypercentage)}% ({correyvotes})\n")
-    myfile.write(f"Li: {lipercentage}% ({livotes})\n")
-    myfile.write(f"O'Tooley: {tooleypercentage}% ({tooleyvotes})\n")
-    myfile.write("----------------------------\n")
-    myfile.write(f"Winner: {winnername}\n")
-    myfile.write("----------------------------\n")
+for x in range(0, candidate_count):
+    
+    myfile.write(f"{votes_df.index[x]}: {votes_df.iloc[x,0]}\n")
+    
+myfile.write("--------------------------------\n")
+myfile.write(f"Winner: {winner}\n")
+myfile.write("--------------------------------\n")
     
